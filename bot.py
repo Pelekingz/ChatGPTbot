@@ -38,25 +38,22 @@ def chat_with_gpt(message):
     response = gpt_response.json()['choices'][0]['text']
 
     return response
-
 def send_message(message):
-    # Code to send the message back to WhatsApp using the WhatsApp API
-    # Replace this with your own implementation
-
-    # Example using Twilio API
-    from twilio.rest import Client
-
-    account_sid = 'YOUR_TWILIO_ACCOUNT_SID'
-    auth_token = 'YOUR_TWILIO_AUTH_TOKEN'
-    client = Client(account_sid, auth_token)
-
+    # Use TMWhatsApp to send the message to WhatsApp
     # Replace 'TO_NUMBER' with the phone number to send the message to
-    # Replace 'FROM_NUMBER' with your Twilio phone number
-    client.messages.create(
-        body=message,
-        from_='FROM_NUMBER',
-        to='TO_NUMBER'
-    )
+    to_number = 'TO_NUMBER'
+
+    # Replace 'FROM_NUMBER' with your registered TMWhatsApp number
+    from_number = 'FROM_NUMBER'
+
+    # Log in to TMWhatsApp
+    whatsapp.login()
+
+    # Send the message
+    whatsapp.send_message(to_number, message)
+
+    # Log out from TMWhatsApp
+    whatsapp.logout()
 
 if __name__ == '__main__':
     app.run()
