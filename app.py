@@ -1,6 +1,8 @@
 import os
 import requests
 from flask import Flask, request
+import openai
+
 
 app = Flask(__name__)
 
@@ -25,7 +27,7 @@ def chat_with_gpt(message):
     gpt_response = requests.post(
         'https://api.openai.com/v1/engines/davinci-codex/completions',
         headers={
-            'Authorization': 'Bearer YOUR_API_KEY',
+            'Authorization': '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',
             'Content-Type': 'application/json'
         },
         json={
@@ -38,13 +40,14 @@ def chat_with_gpt(message):
     response = gpt_response.json()['choices'][0]['text']
 
     return response
+
 def send_message(message):
     # Use TMWhatsApp to send the message to WhatsApp
     # Replace 'TO_NUMBER' with the phone number to send the message to
-    to_number = 'TO_NUMBER'
+    to_number = '0745775713'
 
     # Replace 'FROM_NUMBER' with your registered TMWhatsApp number
-    from_number = 'FROM_NUMBER'
+    from_number = '0740458874'
 
     # Log in to TMWhatsApp
     whatsapp.login()
