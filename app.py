@@ -1,10 +1,15 @@
 import os
 import requests
-from flask import Flask, request
+from flask import Flask, request,render_template
 import openai
+from vonage import Client, Sms
+
+
 
 
 app = Flask(__name__)
+
+client = Client(key='608b3b04', secret='N9FCQ1M9pZhtDfmM')
 
 
 @app.route('/')
@@ -18,6 +23,7 @@ def webhook():
 
     # Extract the message content from the incoming request
     message = data['messages'][0]['body']
+    sender = data['messages'][0]['sender']
 
     # Call the ChatGPT API to process the message
     response = chat_with_gpt(message)
@@ -46,23 +52,20 @@ def chat_with_gpt(message):
 
     return response
 
-def send_message(message):
-    # Use TMWhatsApp to send the message to WhatsApp
-    # Replace 'TO_NUMBER' with the phone number to send the message to
-    to_number = '0740458874'
+def send_message(sender, message):
 
-    # Replace 'FROM_NUMBER' with your registered TMWhatsApp number
-    from_number = '0740458874'
+     # Use Vonage API to send the message back to the sender
+    sms = Sms(client)
+    sms.send_message({
+        'from': '0740458874',  # Your Vonage phone number
+        'to': sender,  # Phone number of the sender
+        'text': message  # Response message
+    })
 
-    # Log in to TMWhatsApp
-    whatsapp.login()
-
-    # Send the message
-    whatsapp.send_message(to_number, message)
-
-    # Log out from TMWhatsApp
-    whatsapp.logout()
 
 if __name__ == '__main__':
     app.run()
+
+
+
 
