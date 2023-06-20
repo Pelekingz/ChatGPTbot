@@ -44,7 +44,7 @@ def chat_with_gpt(message):
 def send_message(message):
     # Use TMWhatsApp to send the message to WhatsApp
     # Replace 'TO_NUMBER' with the phone number to send the message to
-    to_number = '0740458874'
+    to_number = '0758766997'
 
     # Replace 'FROM_NUMBER' with your registered TMWhatsApp number
     from_number = '0740458874'
