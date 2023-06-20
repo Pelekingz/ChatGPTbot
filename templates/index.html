@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp ChatGPT Bot</title>
+    <style>
+        /* Add custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            height: 150px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to WhatsApp ChatGPT Bot</h1>
+        <p>This is a simple chatbot powered by ChatGPT.</p>
+        <p>Start a conversation by sending a message to your WhatsApp number.</p>
+
+        <form id="chat-form" onsubmit="sendMessage(); return false;">
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <input type="text" id="message" placeholder="Type your message" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Send</button>
+            </div>
+        </form>
+
+        <div id="chat-history">
+            <!-- Chat history will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to send a message
+        function sendMessage() {
+            var messageInput = document.getElementById('message');
+            var message = messageInput.value.trim();
+            if (message !== '') {
+                var chatHistory = document.getElementById('chat-history');
+                var userMessage = document.createElement('p');
+                userMessage.className = 'user-message';
+                userMessage.innerText = 'You: ' + message;
+                chatHistory.appendChild(userMessage);
+                messageInput.value = '';
+                scrollToBottom();
+
+// Additional logic to send the message to the server or API
+        // Send the message to the server or API
+        fetch('/webhook', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response received from the server or API
+            var botResponse = data.response;
+            receiveMessage(botResponse);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+                
+                // You can use AJAX or fetch API to send the message to the server
+                // Example: sendToServer(message);
+            }
+        }
+
+        // Function to receive and display a response message
+        function receiveMessage(response) {
+            var chatHistory = document.getElementById('chat-history');
+            var botMessage = document.createElement('p');
+            botMessage.className = 'bot-message';
+            botMessage.innerText = 'Bot: ' + response;
+            chatHistory.appendChild(botMessage);
+            scrollToBottom();
+        }
+
+        // Function to scroll to the bottom of the chat history
+        function scrollToBottom() {
+            var chatHistory = document.getElementById('chat-history');
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // Example code to receive a response message (for testing purposes)
+        var exampleResponse = 'This is a sample response from the bot.';
+        receiveMessage(exampleResponse);
+    </script>
+</body>
+</html>
