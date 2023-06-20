@@ -6,6 +6,11 @@ import openai
 
 app = Flask(__name__)
 
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+    
 # Endpoint to handle incoming messages from WhatsApp
 @app.route('/webhook', methods=['POST'])
 def webhook():
