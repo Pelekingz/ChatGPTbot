@@ -6,10 +6,24 @@ from vonage import Client, Sms
 
 
 
-
 app = Flask(__name__)
 
-client = Client(key='608b3b04', secret='N9FCQ1M9pZhtDfmM')
+
+# Configure Vonage API credentials
+vonage_api_key = '608b3b04'
+vonage_api_secret = 'N9FCQ1M9pZhtDfmM'
+vonage_phone_number = '0740458874'
+
+client = Client(key=vonage_api_key, secret=vonage_api_secret)
+
+
+
+# Configure OpenAI ChatGPT API credentials
+
+openai_api_key = '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'
+
+
+
 
 
 @app.route('/')
@@ -28,6 +42,7 @@ def webhook():
     # Call the ChatGPT API to process the message
     response = chat_with_gpt(message)
 
+
     # Send the response back to WhatsApp
     send_message(response)
 
@@ -37,8 +52,9 @@ def chat_with_gpt(message):
     # Call the ChatGPT API to generate a response
     gpt_response = requests.post(
         'https://api.openai.com/v1/engines/davinci-codex/completions',
+
         headers={
-            'Authorization': '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',
+           'Authorization': f'Bearer {openai_api_key}',
             'Content-Type': 'application/json'
         },
         json={
@@ -57,7 +73,7 @@ def send_message(sender, message):
      # Use Vonage API to send the message back to the sender
     sms = Sms(client)
     sms.send_message({
-        'from': '0740458874',  # Your Vonage phone number
+        'from': vonage_phone_number,  # Your Vonage phone number
         'to': sender,  # Phone number of the sender
         'text': message  # Response message
     })
