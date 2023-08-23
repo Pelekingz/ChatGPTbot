@@ -13,7 +13,7 @@ messagebird_phone_number = '0740458874'
 messagebird_client = Client(messagebird_api_key)
 
 # Configure OpenAI ChatGPT API credentials
-openai_api_key = 'YOUR_OPENAI_API_KEY'
+openai_api_key = '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'
 
 @app.route('/')
 def home():
